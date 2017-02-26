@@ -16,7 +16,7 @@ def get_swd_instance(browser):
     else: raise Exception('Unsupported browser')
 
 @pytest.mark.parametrize("browser", ["Chrome", "Firefox", "Ie"])
-def test_add_new_product(browser):
+def test_add_to_cart(browser):
     try:
         webDriver = get_swd_instance(browser)
         webDriver.set_page_load_timeout(5)
