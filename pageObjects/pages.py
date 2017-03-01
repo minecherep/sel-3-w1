@@ -23,7 +23,7 @@ class MainPage(WebPage):
         page_url = link.get_attribute('href')
         link.click()
 
-        return ProductPage(self.app, page_url)
+        return ProductPage(self._app, page_url)
 
 class ProductPage(WebPage):
 
@@ -33,17 +33,12 @@ class ProductPage(WebPage):
         options =  self.find(By.XPATH, '//*[@id="box-product"]//form[@name="buy_now_form"]//select[contains(@name, "options")]')
         for option in options:
             Select(option).select_by_index(1)
-        
-        try:
-            cart_counter = self.find_one(By.CSS_SELECTOR, '#cart .content .quantity').text
-            cart_counter = int(cart_counter.strip())
-        except ValueError:
-            cart_counter = 0
 
         add_to_cart_button.click()
 
-        self.wait(EC.text_to_be_present_in_element((By.CSS_SELECTOR, '#cart .content .quantity'), str(cart_counter + 1)), self.wait_time, 'Cart counter is not updated')
-
+    def verify_cart_counter(self, value):
+        result = self.wait(EC.text_to_be_present_in_element((By.CSS_SELECTOR, '#cart .content .quantity'), str(value)), self.wait_time, 'Cart counter is not "{0}"'.format(value))
+        return result
 
 class CartPage(WebPage):
 

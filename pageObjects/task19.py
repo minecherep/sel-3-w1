@@ -18,7 +18,9 @@ def test_add_to_cart(browser):
 
             duck_page = mainPage.click_on_most_popular_product(i)
             duck_page.add_to_cart()
-        
+
+            assert duck_page.verify_cart_counter(i), 'Cart counter is not updated'
+
         cartPage = CartPage(app).open()
         
         rows_count = cartPage.get_items_count()
